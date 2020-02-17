@@ -1,0 +1,29 @@
+{
+  "name": "websockets-playground",
+  "version": "0.0.1",
+  "author": "Józef Flakus",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "watch": "tsc -w",
+    "start:server": "ts-node src/server.ts",
+    "start:client": "ts-node src/client.ts"
+    
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13",
+    "ws": "^7.2.1",
+    "@types/ws": "^7.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.7.5",
+    "ts-node": "^8.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JozefFlakus/ts-playground.git"
+  }
+}
