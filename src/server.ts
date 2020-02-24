@@ -1,10 +1,10 @@
 import * as http from 'http';
-import * as stream from 'stream';
+import { Socket } from 'net';
 import { insertIf, logRequest, PORT, logMessage, getProtocols, getAcceptValue, onRequest, onListen } from './util';
 import { parseMessage, constructMessage } from './message.server';
 
 // @TODO
-const onData = (socket: stream.Duplex) => (buffer: Buffer) => {
+const onData = (socket: Socket) => (buffer: Buffer) => {
   const msg = parseMessage(buffer);
 
   logMessage(msg);
@@ -16,9 +16,9 @@ const onData = (socket: stream.Duplex) => (buffer: Buffer) => {
 };
 
 // @TODO
-const onUpgrade = (req: http.IncomingMessage, socket: stream.Duplex) => {
+const onUpgrade = (req: http.IncomingMessage, socket: Socket) => {
   logRequest(req);
-  
+
   const upgradeKey = req.headers['upgrade'];
   const acceptKey = req.headers['sec-websocket-key'] as string;
   const protocolKey = req.headers['sec-websocket-protocol'] as string;
