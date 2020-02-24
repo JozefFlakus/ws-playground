@@ -1,13 +1,13 @@
 import * as WebSocket from 'ws';
+import { log, PORT, logMessage } from './util';
 
-const webSocketServerAddress = 'ws://127.0.0.1:8080';
+const webSocketServerAddress = `ws://127.0.0.1:${PORT}`;
 const webSocketServer = new WebSocket(webSocketServerAddress);
 
 webSocketServer.on('open', () => {
-  console.log(`Connected client @ ${webSocketServerAddress}`);
+  log(`Connected client @ ${webSocketServerAddress}`);
   webSocketServer.send('Hello, world!');
   webSocketServer.close();
 });
 
-webSocketServer.on('message', data =>
-  console.log(`Recieved: ${data}`));
+webSocketServer.on('message', logMessage);
