@@ -8,7 +8,7 @@ export const parseMessage = (buffer: Buffer): string | undefined => {
   log('secondByte'.padStart(10), toByte(secondByte), secondByte);
 
   // first byte parsing
-  const endFrame = firstByte & 0b10000000;
+  const finalFrame = firstByte & 0b10000000;
   const opCode = firstByte & 0b00001111;
 
   // second byte
