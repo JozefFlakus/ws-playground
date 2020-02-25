@@ -6,7 +6,7 @@ export const parseMessage = (buffer: Buffer): string | undefined => {
 
   log('firstByte'.padStart(10), toByte(firstByte), firstByte);
   log('secondByte'.padStart(10), toByte(secondByte), secondByte);
-  
+
   // first byte parsing
   const endFrame = firstByte & 0b10000000;
   const opCode = firstByte & 0b00001111;
@@ -23,18 +23,18 @@ export const parseMessage = (buffer: Buffer): string | undefined => {
 
   if (isMasked) {
     const maskingKey = buffer.readUInt32BE(currentOffset);
-    const mask = (int32: number) => new Uint8Array([
-      (int32 & 0xff000000) >> 24,
-      (int32 & 0x00ff0000) >> 16,
-      (int32 & 0x0000ff00) >> 8,
-      (int32 & 0x000000ff),
+    const mask = new Uint8Array([
+      (maskingKey & 0xff000000) >> 24,
+      (maskingKey & 0x00ff0000) >> 16,
+      (maskingKey & 0x0000ff00) >> 8,
+      (maskingKey & 0x000000ff),
     ]);
-    
+
     currentOffset += 4;
 
     for (let i = 0; i < payloadLength; i++) {
       const byte = buffer.readUInt8(currentOffset++);
-      data.writeUInt8(byte ^ mask(maskingKey)[i % 4], i);
+      data.writeUInt8(byte ^ mask[i % 4], i);
     }
   } else {
     buffer.copy(data, 0, currentOffset++);
@@ -42,7 +42,7 @@ export const parseMessage = (buffer: Buffer): string | undefined => {
 
   logOpCode(opCode);
 
-  if (opCode === OP_CODE.CLOSE) return; 
+  if (opCode === OP_CODE.CLOSE) return;
   if (opCode !== OP_CODE.TEXT) return;
 
   return data.toString('utf8');
