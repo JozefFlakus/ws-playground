@@ -1,4 +1,4 @@
-import * as http from 'http';
+import { createServer, IncomingMessage } from 'http';
 import { Socket } from 'net';
 import { insertIf, logRequest, PORT, logMessage, getProtocols, getAcceptValue, onRequest, onListen } from './util';
 import { parseMessage, constructMessage } from './message.server';
@@ -16,7 +16,7 @@ const onData = (socket: Socket) => (buffer: Buffer) => {
 };
 
 // @TODO
-const onUpgrade = (req: http.IncomingMessage, socket: Socket) => {
+const onUpgrade = (req: IncomingMessage, socket: Socket) => {
   logRequest(req);
 
   const upgradeKey = req.headers['upgrade'];
@@ -35,15 +35,15 @@ const onUpgrade = (req: http.IncomingMessage, socket: Socket) => {
     'Upgrade: WebSocket',
     'Connection: Upgrade',
     `Sec-WebSocket-Accept: ${hash}`,
-    ...insertIf(protocols.includes('json'))(
-      'Sec-WebSocket-Protocol: json'),
+    ...insertIf(protocols.includes('plaintext'))(
+      'Sec-WebSocket-Protocol: plaintext'),
   ];
 
   socket.on('data', onData(socket));
   socket.write(responseHeaders.join('\r\n') + '\r\n\r\n');
 };
 
-const server = http.createServer();
+const server = createServer();
 
 server.on('request', onRequest);
 server.on('upgrade', onUpgrade);
