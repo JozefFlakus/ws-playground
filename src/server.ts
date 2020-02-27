@@ -31,7 +31,7 @@ const onUpgrade = (req: IncomingMessage, socket: Socket) => {
   const protocols = getProtocols(protocolKey);
 
   const response = [
-    'HTTP/1.1 101 Web Socket Protocol Handshake',
+    'HTTP/1.1 101 Switching Protocols',
     'Upgrade: WebSocket',
     'Connection: Upgrade',
     `Sec-WebSocket-Accept: ${hash}`,
