@@ -14,9 +14,9 @@ export const parseMessage = (buffer: Buffer): string | undefined => {
   // second byte
   const masked = secondByte & 0b10000000;
   const isMasked = Boolean(masked);
+  const payloadLength = secondByte & 0b01111111;
 
   let currentOffset = 2;
-  let payloadLength = secondByte & 0b01111111;
 
   // payload processing
   const data = Buffer.alloc(payloadLength);
