@@ -1,4 +1,4 @@
-import * as http from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 import { createHash } from 'crypto';
 
 export const PORT = 8080;
@@ -17,7 +17,7 @@ export const OP_CODE = {
 export const insertIf = <T>(condition: boolean) => (...elements: T[]) =>
   condition ? elements : [];
 
-export const logRequest = (req: http.IncomingMessage) => {
+export const logRequest = (req: IncomingMessage) => {
   log('-------------------------------------');
   log('Request: ', `${req.method} ${req.url}`);
   log('Headers: ', req.headers);
@@ -64,6 +64,9 @@ export const onListen = () => {
   log(`Started server @ http://127.0.0.1:${PORT}`);
 }
 
-export const onRequest = (req: http.IncomingMessage) => {
+export const onRequest = (req: IncomingMessage, res: ServerResponse) => {
   log(`${req.method} ${req.url}`);
+  res.writeHead(501);
+  res.write('Not implemented');
+  res.end();
 }
