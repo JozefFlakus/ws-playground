@@ -30,7 +30,7 @@ const onUpgrade = (req: IncomingMessage, socket: Socket) => {
   const hash = getAcceptValue(acceptKey);
   const protocols = getProtocols(protocolKey);
 
-  const responseHeaders = [
+  const response = [
     'HTTP/1.1 101 Web Socket Protocol Handshake',
     'Upgrade: WebSocket',
     'Connection: Upgrade',
@@ -40,7 +40,7 @@ const onUpgrade = (req: IncomingMessage, socket: Socket) => {
   ];
 
   socket.on('data', onData(socket));
-  socket.write(responseHeaders.join('\r\n') + '\r\n\r\n');
+  socket.write(response.join('\r\n') + '\r\n\r\n');
 };
 
 const server = createServer();
